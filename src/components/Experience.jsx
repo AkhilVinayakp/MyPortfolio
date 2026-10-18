@@ -1,116 +1,109 @@
 import React from 'react';
-import { Briefcase, CheckCircle2, MapPin, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Briefcase, CheckCircle2, ChevronRight } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 
 export default function Experience() {
   const { experience } = portfolioData;
 
   return (
-    <section id="experience" className="py-20 md:py-24 border-b border-argon-border bg-argon-surface/50">
-      <div className="section-container space-y-12">
-        {/* Header */}
-        <div className="max-w-2xl space-y-3">
-          <span className="eyebrow-label">02 / Career History</span>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-argon-dark">
-            Professional Experience
-          </h2>
-          <p className="text-sm sm:text-base text-argon-muted">
-            Verified engineering roles across enterprise data platforms, telecom machine learning workflows, and scalable Python ETL systems.
-          </p>
-        </div>
+    <section id="experience" className="py-20 md:py-24 relative">
+      <div className="section-container">
+        <div className="max-w-4xl space-y-14">
+          {/* Section Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="space-y-3"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              Work Experience
+            </h2>
+            <p className="text-lg text-zinc-400 font-normal">
+              Chronological track record of data engineering and machine learning roles.
+            </p>
+          </motion.div>
 
-        {/* Experience Timeline List */}
-        <div className="space-y-8">
-          {experience.map((job) => (
-            <article
-              key={job.id}
-              className="argon-card argon-card-hover p-6 sm:p-8 transition-all"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-                {/* Left Metadata Column (4 cols) */}
-                <div className="lg:col-span-4 space-y-3 border-b lg:border-b-0 lg:border-r border-argon-border pb-5 lg:pb-0 lg:pr-6">
-                  <div className="flex items-center justify-between lg:justify-start gap-2">
-                    <span className="inline-flex items-center gap-1.5 font-mono text-xs font-medium text-argon-primary bg-indigo-50 px-2.5 py-1 rounded-md">
-                      <Calendar className="w-3.5 h-3.5" />
-                      {job.period}
-                    </span>
-                    {job.current && (
-                      <span className="font-mono text-[11px] uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        Current
-                      </span>
-                    )}
-                  </div>
-
+          {/* Timeline list */}
+          <div className="space-y-10">
+            {experience.map((job, idx) => (
+              <motion.div
+                key={job.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                whileHover={{ y: -3, transition: { duration: 0.2 } }}
+                className="p-7 sm:p-8 rounded-2xl bg-obsidian-850/70 border border-white/10 hover:border-emerald-500/40 hover:shadow-emerald-sm space-y-6 transition-all"
+              >
+                {/* Header row: Role, Company, Period, Location */}
+                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 pb-2 border-b border-white/5">
                   <div>
-                    <h3 className="text-lg font-bold text-argon-dark">
-                      {job.role}
+                    <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                      <span>{job.role}</span>
+                      <span className="text-zinc-600 font-normal">&middot;</span>
+                      <span className={job.current ? 'text-cyber-emerald text-glow-emerald' : 'text-cyber-cyan'}>
+                        {job.company}
+                      </span>
                     </h3>
-                    <div className="flex items-center gap-2 text-sm font-medium text-argon-muted mt-0.5">
-                      <Briefcase className="w-4 h-4 text-argon-primary shrink-0" />
-                      <span>{job.company}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-argon-muted mt-1">
-                      <MapPin className="w-3.5 h-3.5 shrink-0" />
-                      <span>{job.location}</span>
-                    </div>
+                    <p className="text-xs font-mono text-zinc-400 mt-1">
+                      {job.location}
+                    </p>
                   </div>
-
-                  {/* Tech Stack Pills */}
-                  <div className="pt-2">
-                    <div className="text-[11px] font-mono uppercase tracking-wider text-argon-muted mb-2">
-                      Technologies Used
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {job.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2.5 py-1 text-xs font-mono bg-argon-bg text-argon-dark border border-argon-border rounded-md"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="text-xs font-mono text-zinc-400 sm:text-right mt-1 sm:mt-0 flex items-center gap-2">
+                    {job.current && (
+                      <span className="w-2 h-2 rounded-full bg-cyber-emeraldGlow animate-pulse" aria-hidden="true" />
+                    )}
+                    <span>{job.period}</span>
                   </div>
                 </div>
 
-                {/* Right Responsibilities & Verified Accomplishments (8 cols) */}
-                <div className="lg:col-span-8 space-y-5">
-                  <div>
-                    <h4 className="text-xs font-mono uppercase tracking-wider text-argon-muted mb-3">
-                      Core Responsibilities
+                {/* Key Responsibilities */}
+                <div className="space-y-3">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-zinc-400">
+                    Key Responsibilities &amp; Systems
+                  </h4>
+                  <ul className="space-y-2.5 text-base text-zinc-300 leading-relaxed max-w-[65ch]">
+                    {job.responsibilities.map((resp, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <ChevronRight className="w-4 h-4 text-cyber-cyan shrink-0 mt-1" />
+                        <span>{resp}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Verified Accomplishments */}
+                {job.verifiedAccomplishments?.length > 0 && (
+                  <div className="p-4 rounded-xl bg-obsidian-900 border border-emerald-500/20 space-y-2 max-w-[65ch]">
+                    <h4 className="text-xs font-mono uppercase tracking-wider text-cyber-emerald flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Verified Accomplishments</span>
                     </h4>
-                    <ul className="space-y-2.5">
-                      {job.responsibilities.map((item, idx) => (
-                        <li
-                          key={idx}
-                          className="text-sm text-argon-muted leading-relaxed flex items-start gap-2.5"
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-argon-primary mt-2 shrink-0" />
-                          <span>{item}</span>
-                        </li>
+                    <ul className="space-y-1.5 text-sm text-zinc-300 list-disc list-inside">
+                      {job.verifiedAccomplishments.map((acc, i) => (
+                        <li key={i}>{acc}</li>
                       ))}
                     </ul>
                   </div>
+                )}
 
-                  {job.verifiedAccomplishments && job.verifiedAccomplishments.length > 0 && (
-                    <div className="p-4 rounded-lg bg-argon-bg border border-argon-border space-y-2">
-                      <div className="text-xs font-mono uppercase tracking-wider text-argon-dark font-semibold flex items-center gap-1.5">
-                        <CheckCircle2 className="w-4 h-4 text-argon-primary" />
-                        Verified Key Impact
-                      </div>
-                      <ul className="space-y-1.5">
-                        {job.verifiedAccomplishments.map((acc, idx) => (
-                          <li key={idx} className="text-xs sm:text-sm text-argon-dark leading-relaxed">
-                            • {acc}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                {/* Technologies used */}
+                <div className="pt-2 flex flex-wrap items-center gap-2">
+                  {job.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-3 py-1 text-sm rounded-md bg-obsidian-950 border border-white/5 text-zinc-300 font-mono hover:border-cyber-cyan/30 hover:text-cyber-cyan transition-colors"
+                    >
+                      <code>{tech}</code>
+                    </span>
+                  ))}
                 </div>
-              </div>
-            </article>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,55 +1,68 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Database, Cloud, Cpu, Sparkles } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
+import PillarFlashcard from './PillarFlashcard';
 
 export default function About() {
   const { about } = portfolioData;
 
+  const pillarIcons = [Database, Cloud, Cpu];
+
   return (
-    <section id="about" className="py-20 md:py-24 border-b border-argon-border">
+    <section id="about" className="py-20 md:py-24 bg-obsidian-900/50 border-y border-white/5 relative">
       <div className="section-container">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
-          {/* Section Header (4 cols) */}
-          <div className="lg:col-span-4 space-y-3">
-            <span className="eyebrow-label">01 / Narrative</span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-argon-dark">
-              From Reliable Data Pipelines to Production ML
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="max-w-5xl lg:max-w-6xl space-y-12"
+        >
+          {/* Section Heading */}
+          <div className="space-y-3">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              Engineering Background
             </h2>
-            <p className="text-sm text-argon-muted leading-relaxed">
-              Production machine learning is only as reliable as the data engineering underneath it.
+            <p className="text-lg text-zinc-400 leading-relaxed font-normal max-w-[65ch]">
+              {about.summary}
             </p>
           </div>
 
-          {/* Factual Story & Pillars (8 cols) */}
-          <div className="lg:col-span-8 space-y-8">
-            <div className="argon-card p-6 sm:p-8 space-y-4">
-              <p className="text-base sm:text-lg font-medium text-argon-dark leading-relaxed">
-                {about.summary}
-              </p>
-              {about.paragraphs.map((para, idx) => (
-                <p key={idx} className="text-sm sm:text-base text-argon-muted leading-relaxed">
-                  {para}
-                </p>
-              ))}
+          {/* Narrative paragraphs */}
+          <div className="space-y-6 text-base text-zinc-300 leading-relaxed max-w-[65ch]">
+            {about.paragraphs.map((para, idx) => (
+              <p key={idx}>{para}</p>
+            ))}
+          </div>
+
+          {/* Focus Areas - Interactive 3D Architecture Flashcards */}
+          <div className="pt-6 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <h3 className="text-xl font-semibold text-white tracking-tight">
+                Focus Areas &amp; Architectural Strengths
+              </h3>
+              <span className="text-xs font-mono text-cyber-cyan/80 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-cyber-cyan" />
+                <span>Interactive Flashcards &middot; Click to inspect blueprints</span>
+              </span>
             </div>
 
-            {/* 3 Core Engineering Pillars */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {about.corePillars.map((pillar, index) => (
-                <div key={pillar.title} className="argon-card p-5 space-y-2">
-                  <span className="font-mono text-xs text-argon-primary font-semibold">
-                    0{index + 1}
-                  </span>
-                  <h3 className="text-sm font-semibold text-argon-dark">
-                    {pillar.title}
-                  </h3>
-                  <p className="text-xs text-argon-muted leading-relaxed">
-                    {pillar.detail}
-                  </p>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {about.corePillars.map((pillar, idx) => {
+                const IconComponent = pillarIcons[idx % pillarIcons.length];
+                return (
+                  <PillarFlashcard
+                    key={pillar.id || pillar.title}
+                    pillar={pillar}
+                    icon={IconComponent}
+                    idx={idx}
+                  />
+                );
+              })}
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
