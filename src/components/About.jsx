@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Database, Cloud, Cpu } from 'lucide-react';
+import { Database, Cloud, Cpu, Sparkles } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
+import PillarFlashcard from './PillarFlashcard';
 
 export default function About() {
   const { about } = portfolioData;
@@ -16,7 +17,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="max-w-4xl space-y-12"
+          className="max-w-5xl lg:max-w-6xl space-y-12"
         >
           {/* Section Heading */}
           <div className="space-y-3">
@@ -35,35 +36,28 @@ export default function About() {
             ))}
           </div>
 
-          {/* Focus Areas - Sleek dark glass panels with subtle hover glow */}
+          {/* Focus Areas - Interactive 3D Architecture Flashcards */}
           <div className="pt-6 space-y-6">
-            <h3 className="text-xl font-semibold text-white tracking-tight">
-              Focus Areas &amp; Architectural Strengths
-            </h3>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <h3 className="text-xl font-semibold text-white tracking-tight">
+                Focus Areas &amp; Architectural Strengths
+              </h3>
+              <span className="text-xs font-mono text-cyber-cyan/80 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-cyber-cyan" />
+                <span>Interactive Flashcards &middot; Click to inspect blueprints</span>
+              </span>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {about.corePillars.map((pillar, idx) => {
                 const IconComponent = pillarIcons[idx % pillarIcons.length];
                 return (
-                  <motion.div
-                    key={pillar.title}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                    className="p-6 rounded-2xl bg-obsidian-850/80 border border-white/10 hover:border-cyber-cyan/40 hover:shadow-cyan-sm space-y-3 transition-all"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-cyber-cyan/10 border border-cyber-cyan/20 flex items-center justify-center text-cyber-cyan">
-                      <IconComponent className="w-4 h-4" />
-                    </div>
-                    <h4 className="text-base font-semibold text-white">
-                      {pillar.title}
-                    </h4>
-                    <p className="text-sm text-zinc-400 leading-relaxed">
-                      {pillar.detail}
-                    </p>
-                  </motion.div>
+                  <PillarFlashcard
+                    key={pillar.id || pillar.title}
+                    pillar={pillar}
+                    icon={IconComponent}
+                    idx={idx}
+                  />
                 );
               })}
             </div>

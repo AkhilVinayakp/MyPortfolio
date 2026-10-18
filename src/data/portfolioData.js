@@ -29,16 +29,43 @@ export const portfolioData = {
     ],
     corePillars: [
       {
+        id: "lakehouse",
         title: "Enterprise Lakehouse & ETL",
         detail: "Informatica-to-Databricks migrations, dbt Data Vault modeling, Medallion architecture, and automated reconciliation.",
+        tag: "Data Architecture",
+        stack: ["Databricks", "dbt", "PySpark", "SQL", "Data Vault"],
+        mechanisms: [
+          "Medallion staging: Raw Bronze to curated Gold marts",
+          "dbt Data Vault (Hubs, Links, Satellites) in Silver",
+          "Automated row-hash validation & reconciliation logic",
+          "Database view query tuning for lower runtime latency"
+        ],
       },
       {
+        id: "cloud-systems",
         title: "Cloud & Distributed Systems",
         detail: "Production workloads on GCP (Vertex AI, BigQuery, GCS), Databricks, PySpark, Snowflake, and Apache Airflow.",
+        tag: "Cloud Infrastructure",
+        stack: ["GCP", "BigQuery", "PySpark", "GCS", "Snowflake"],
+        mechanisms: [
+          "BigQuery partitioned/clustered analytical querying",
+          "Distributed PySpark transformations across multi-domain datasets",
+          "Automated cloud data pipelines using Dataform and Airflow",
+          "Enterprise data reconciliation and storage governance"
+        ],
       },
       {
+        id: "mlops",
         title: "Production ML & MLOps",
         detail: "Feature pipelines, XGBoost & KMeans clustering, SHAP interpretability, and Vertex AI MLOps pipeline orchestration.",
+        tag: "Applied Intelligence",
+        stack: ["Vertex AI", "XGBoost", "KMeans", "SHAP", "MLflow"],
+        mechanisms: [
+          "Interpretable supervised classification with SHAP TreeExplainer",
+          "Unsupervised customer segmentation & cluster profiling",
+          "Containerized Vertex AI Pipelines with Docker and Kubeflow SDK",
+          "Automated data quality monitoring and feature preparation"
+        ],
       },
     ],
   },

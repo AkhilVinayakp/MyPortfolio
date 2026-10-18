@@ -8,12 +8,17 @@ import Skills from './components/Skills';
 import EducationCerts from './components/EducationCerts';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import BackgroundGlow from './components/BackgroundGlow';
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col bg-obsidian-950 text-zinc-100 bg-hud-grid bg-[size:32px_32px]">
+    <div className="relative min-h-screen flex flex-col bg-obsidian-950 text-zinc-100 bg-hud-grid bg-[size:32px_32px] overflow-x-hidden">
+      {/* Interactive Background Mouse Movement Layer */}
+      <BackgroundGlow />
+
+      {/* Primary Application Layout */}
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow relative z-10">
         <Hero />
         <About />
         <Experience />
