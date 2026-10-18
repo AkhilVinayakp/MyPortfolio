@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Respect user reduced-motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .argon-card {
+    @apply bg-argon-surface border border-argon-border rounded-xl shadow-argon-sm transition-all duration-200;
+  }
+  .argon-card-hover {
+    @apply hover:shadow-argon-md hover:border-slate-300;
+  }
+  .section-container {
+    @apply max-w-6xl mx-auto px-5 sm:px-8 lg:px-12;
+  }
+  .eyebrow-label {
+    @apply font-mono text-xs uppercase tracking-widest text-argon-primary font-medium;
+  }
+}
