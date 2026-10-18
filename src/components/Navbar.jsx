@@ -1,155 +1,131 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, X, FileText, ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Github, Linkedin, Menu, X, Terminal } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
-
-const navLinks = [
-  { name: 'About', href: '#about' },
-  { name: 'Experience', href: '#experience' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Credentials', href: '#credentials' },
-  { name: 'Contact', href: '#contact' },
-];
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const { identity } = portfolioData;
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 16);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Close mobile menu on Escape key
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && mobileMenuOpen) {
-        setMobileMenuOpen(false);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mobileMenuOpen]);
+  const navLinks = [
+    { label: 'About', href: '#about' },
+    { label: 'Experience', href: '#experience' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Skills', href: '#skills' },
+    { label: 'Education', href: '#education' },
+    { label: 'Contact', href: '#contact' },
+  ];
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-200 ${
-        scrolled
-          ? 'bg-argon-surface/90 backdrop-blur-md border-b border-argon-border shadow-argon-sm'
-          : 'bg-argon-bg/80 backdrop-blur-sm border-b border-transparent'
-      }`}
-    >
-      <nav
-        className="section-container h-16 flex items-center justify-between"
-        aria-label="Primary Navigation"
-      >
-        {/* Personal Wordmark */}
+    <header className="sticky top-0 z-50 bg-obsidian-950/80 backdrop-blur-md border-b border-white/5 overflow-x-clip">
+      <div className="section-container flex items-center justify-between h-20">
+        {/* Identity wordmark */}
         <a
           href="#top"
-          className="group flex items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-argon-primary rounded-md"
+          className="group flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-cyan rounded-md"
         >
-          <span className="w-8 h-8 rounded-lg bg-argon-dark text-white font-mono text-sm font-semibold flex items-center justify-center group-hover:bg-argon-primary transition-colors">
-            AV
-          </span>
+          <div className="w-9 h-9 rounded-xl bg-obsidian-850 border border-white/10 flex items-center justify-center text-cyber-cyan group-hover:border-cyber-cyan/50 group-hover:shadow-cyan-sm transition-all">
+            <Terminal className="w-4 h-4" />
+          </div>
           <div className="flex flex-col">
-            <span className="font-semibold text-sm tracking-tight text-argon-dark leading-none">
-              {portfolioData.identity.name}
+            <span className="font-bold text-zinc-100 text-base tracking-tight group-hover:text-cyber-cyan transition-colors">
+              {identity.name}
             </span>
-            <span className="font-mono text-[11px] text-argon-muted mt-0.5">
-              Data &amp; AI/ML Engineer
+            <span className="text-xs text-zinc-400 font-mono">
+              Data &amp; ML Engineer
             </span>
           </div>
         </a>
 
-        {/* Desktop Nav Links */}
-        <div className="hidden md:flex items-center gap-1 lg:gap-2">
+        {/* Desktop Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-zinc-400" aria-label="Main Navigation">
           {navLinks.map((link) => (
             <a
-              key={link.name}
+              key={link.label}
               href={link.href}
-              className="px-3 py-1.5 text-sm font-medium text-argon-muted hover:text-argon-dark rounded-md hover:bg-argon-subtle/70 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-argon-primary"
+              className="hover:text-cyber-cyan transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-cyan rounded-sm"
             >
-              {link.name}
+              {link.label}
             </a>
           ))}
+        </nav>
+
+        {/* External Social Profiles & Availability Status */}
+        <div className="hidden lg:flex items-center gap-4">
+          <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-500/30 shadow-emerald-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyber-emeraldGlow animate-pulse" aria-hidden="true" />
+            <span>Telemetry: Online</span>
+          </div>
+
+          <a
+            href={identity.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 text-zinc-400 hover:text-cyber-cyan hover:bg-white/5 transition-all rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-cyan"
+            aria-label="GitHub Profile"
+          >
+            <Github className="w-5 h-5" />
+          </a>
+
+          <a
+            href={identity.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 text-zinc-400 hover:text-cyber-cyan hover:bg-white/5 transition-all rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-cyan"
+            aria-label="LinkedIn Profile"
+          >
+            <Linkedin className="w-5 h-5" />
+          </a>
         </div>
 
-        {/* Resume Link / Action */}
-        <div className="hidden md:flex items-center gap-3">
-          {portfolioData.resumeConfig.isPublic ? (
-            <a
-              href={portfolioData.resumeConfig.publicPath}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-mono font-medium text-argon-dark bg-argon-surface border border-argon-border rounded-lg hover:border-argon-primary hover:text-argon-primary shadow-argon-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-argon-primary"
-            >
-              <FileText className="w-3.5 h-3.5" />
-              Resume.pdf
-              <ArrowUpRight className="w-3.5 h-3.5 opacity-60" />
-            </a>
-          ) : (
-            <a
-              href="#contact"
-              title="Resume PDF held privately until verified for public release"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-mono font-medium text-argon-muted bg-argon-subtle border border-argon-border rounded-lg hover:text-argon-dark hover:border-slate-300 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-argon-primary"
-            >
-              <FileText className="w-3.5 h-3.5 text-argon-primary" />
-              Request Resume
-            </a>
-          )}
-        </div>
-
-        {/* Mobile Menu Toggle Button */}
+        {/* Mobile Menu Button */}
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="lg:hidden p-2.5 text-zinc-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-cyan"
           aria-expanded={mobileMenuOpen}
-          aria-controls="mobile-navigation-menu"
-          aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          className="md:hidden p-2 rounded-lg text-argon-muted hover:text-argon-dark hover:bg-argon-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-argon-primary"
+          aria-label="Toggle navigation menu"
         >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
-      </nav>
+      </div>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div
-          id="mobile-navigation-menu"
-          className="md:hidden bg-argon-surface border-b border-argon-border px-5 pt-2 pb-5 space-y-1 shadow-argon-md"
-        >
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2.5 rounded-lg text-sm font-medium text-argon-dark hover:bg-argon-subtle transition-colors"
-            >
-              {link.name}
-            </a>
-          ))}
-          <div className="pt-3 mt-2 border-t border-argon-border">
-            {portfolioData.resumeConfig.isPublic ? (
+        <div className="lg:hidden bg-obsidian-900 border-b border-white/10 px-6 py-6 space-y-4">
+          <nav className="flex flex-col space-y-3 text-base font-medium text-zinc-300" aria-label="Mobile Navigation">
+            {navLinks.map((link) => (
               <a
-                href={portfolioData.resumeConfig.publicPath}
+                key={link.label}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1 hover:text-cyber-cyan transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+          <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+            <span className="text-xs font-mono text-zinc-500">Bangalore / Kerala, India</span>
+            <div className="flex items-center gap-3">
+              <a
+                href={identity.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-mono font-medium text-white bg-argon-dark rounded-lg"
+                className="text-zinc-400 hover:text-cyber-cyan"
+                aria-label="GitHub Profile"
               >
-                <FileText className="w-4 h-4" />
-                Download Resume
+                <Github className="w-5 h-5" />
               </a>
-            ) : (
               <a
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-mono font-medium text-argon-dark bg-argon-subtle border border-argon-border rounded-lg"
+                href={identity.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-400 hover:text-cyber-cyan"
+                aria-label="LinkedIn Profile"
               >
-                <FileText className="w-4 h-4 text-argon-primary" />
-                Resume (Verify to Publish)
+                <Linkedin className="w-5 h-5" />
               </a>
-            )}
+            </div>
           </div>
         </div>
       )}

@@ -1,49 +1,70 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Cpu, Terminal, Database, Layers, ShieldCheck } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 
 export default function Skills() {
   const { skills } = portfolioData;
 
+  const categoryIcons = [Terminal, Database, Layers, Cpu, ShieldCheck];
+
   return (
-    <section id="skills" className="py-20 md:py-24 border-b border-argon-border bg-argon-surface/50">
-      <div className="section-container space-y-12">
-        <div className="max-w-2xl space-y-3">
-          <span className="eyebrow-label">04 / Technical Stack</span>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-argon-dark">
-            Curated Capabilities &amp; Tooling
-          </h2>
-          <p className="text-sm sm:text-base text-argon-muted">
-            Organized by engineering domain rather than arbitrary percentage ratings. All technologies are verified from production experience and technical specialization.
-          </p>
-        </div>
+    <section id="skills" className="py-20 md:py-24 relative">
+      <div className="section-container">
+        <div className="max-w-4xl space-y-14">
+          {/* Section Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="space-y-3"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              Technical Competencies
+            </h2>
+            <p className="text-lg text-zinc-400 font-normal">
+              Applied tools, frameworks, and cloud services across data and machine learning engineering.
+            </p>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skills.map((group) => (
-            <div
-              key={group.category}
-              className="argon-card p-6 flex flex-col justify-between space-y-5"
-            >
-              <div className="space-y-2">
-                <h3 className="text-base font-bold text-argon-dark">
-                  {group.category}
-                </h3>
-                <p className="text-xs text-argon-muted leading-relaxed">
-                  {group.description}
-                </p>
-              </div>
+          {/* Categorized Skills Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {skills.map((group, idx) => {
+              const IconComp = categoryIcons[idx % categoryIcons.length];
+              return (
+                <motion.div
+                  key={group.category}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.08 }}
+                  whileHover={{ y: -3, transition: { duration: 0.2 } }}
+                  className="p-7 rounded-2xl bg-obsidian-850/80 border border-white/10 hover:border-cyber-cyan/40 hover:shadow-cyan-sm space-y-5 transition-all"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-cyber-cyan/10 border border-cyber-cyan/20 flex items-center justify-center text-cyber-cyan">
+                      <IconComp className="w-4 h-4" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white">
+                      {group.category}
+                    </h3>
+                  </div>
 
-              <div className="flex flex-wrap gap-2 pt-2 border-t border-argon-border">
-                {group.items.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-2.5 py-1 text-xs font-mono font-medium bg-argon-bg text-argon-dark border border-argon-border rounded-md"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
+                  <div className="flex flex-wrap gap-2">
+                    {group.items.map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-3 py-1.5 text-xs sm:text-sm rounded-lg bg-obsidian-900 border border-white/5 text-zinc-300 font-mono hover:border-cyber-cyan/40 hover:text-cyber-cyan hover:shadow-cyan-sm transition-all cursor-default"
+                      >
+                        <code>{skill}</code>
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

@@ -1,199 +1,151 @@
 import React, { useState } from 'react';
-import { Github, ExternalLink, AlertCircle, GitBranch } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Layers, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 
-const categories = [
-  'All',
-  'Data Engineering Pipelines',
-  'Machine Learning Workflows',
-  'MLOps & Deployment',
-  'RAG & AI Applications',
-];
-
 export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const { projects } = portfolioData;
+
+  const categories = ['All', 'Data Engineering', 'Machine Learning', 'MLOps', 'AI Systems'];
 
   const filteredProjects =
-    activeCategory === 'All'
-      ? portfolioData.projects
-      : portfolioData.projects.filter((p) => p.category === activeCategory);
+    selectedCategory === 'All'
+      ? projects
+      : projects.filter((p) => p.category === selectedCategory);
 
   return (
-    <section id="projects" className="py-20 md:py-24 border-b border-argon-border">
-      <div className="section-container space-y-10">
-        {/* Section Heading & Placeholder Transparency Banner */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <div className="max-w-2xl space-y-3">
-            <span className="eyebrow-label">03 / Case Studies &amp; Systems</span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-argon-dark">
-              Selected Engineering Projects
-            </h2>
-            <p className="text-sm sm:text-base text-argon-muted">
-              Architectural case studies structured across Data Engineering, Machine Learning, MLOps, and RAG systems.
-            </p>
-          </div>
+    <section id="projects" className="py-20 md:py-24 bg-obsidian-900/40 border-y border-white/5 relative">
+      <div className="section-container">
+        <div className="max-w-4xl space-y-12">
+          {/* Section Heading & Category Filter Tabs */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+            <div className="space-y-3">
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+                Selected Case Studies
+              </h2>
+              <p className="text-lg text-zinc-400 font-normal">
+                Architectural deep-dives across data pipelines, cloud platforms, and production ML systems.
+              </p>
+            </div>
 
-          {/* Category Filter Pills */}
-          <div
-            className="flex flex-wrap gap-1.5"
-            role="tablist"
-            aria-label="Filter projects by domain"
-          >
-            {categories.map((cat) => {
-              const active = activeCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-argon-primary ${
-                    active
-                      ? 'bg-argon-dark text-white shadow-argon-sm'
-                      : 'bg-argon-surface text-argon-muted border border-argon-border hover:text-argon-dark'
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Author Note on Uninvented Project Details */}
-        <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-200/90 flex items-start gap-3 text-xs sm:text-sm text-amber-900">
-          <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-          <div>
-            <span className="font-semibold">Content Integrity Notice: </span>
-            Your resume lists enterprise work under CGI, Infosys, and Turbolab Technologies without standalone project titles or public repository URLs. The cards below provide complete case-study layouts with explicit{' '}
-            <code className="font-mono bg-amber-100 px-1.5 py-0.5 rounded text-xs">
-              [PLACEHOLDER]
-            </code>{' '}
-            markers in <code className="font-mono">src/data/portfolioData.js</code> so you can supply verified project names, metrics, and GitHub links.
-          </div>
-        </div>
-
-        {/* Case Study Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredProjects.map((project) => (
-            <article
-              key={project.id}
-              className="argon-card argon-card-hover flex flex-col justify-between p-6 sm:p-7"
+            {/* Dunesday Cyber Category Filter Tabs */}
+            <div
+              className="flex flex-wrap gap-1.5 p-1.5 rounded-xl bg-obsidian-850 border border-white/10"
+              role="tablist"
+              aria-label="Filter projects by discipline"
             >
-              <div className="space-y-5">
-                {/* Top Meta Bar */}
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-mono text-xs font-medium text-argon-primary bg-indigo-50 px-2.5 py-1 rounded">
-                    {project.category}
-                  </span>
-                  {project.isPlaceholder && (
-                    <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-amber-100/80 text-amber-800 border border-amber-300">
-                      Template Slot
-                    </span>
-                  )}
-                </div>
+              {categories.map((cat) => {
+                const isActive = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3.5 py-1.5 text-xs sm:text-sm font-mono rounded-lg transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-cyan ${
+                      isActive
+                        ? 'bg-gradient-to-r from-cyan-400 to-emerald-400 text-obsidian-950 font-bold shadow-cyan-sm'
+                        : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-                {/* Title & Subtitle */}
-                <div>
-                  <h3 className="text-lg font-bold text-argon-dark leading-snug">
-                    {project.title}
-                  </h3>
-                  <p className="text-xs text-argon-muted mt-1">
-                    {project.subtitle}
+          {/* Project List */}
+          <div className="space-y-12">
+            <AnimatePresence mode="wait">
+              {filteredProjects.map((project, idx) => (
+                <motion.article
+                  key={project.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  className="p-8 sm:p-10 rounded-2xl bg-obsidian-850/80 border border-white/10 hover:border-cyber-cyan/40 hover:shadow-cyan-sm space-y-7 transition-all"
+                >
+                  {/* Header: Title, Category & Subtitle */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-block text-xs font-mono px-2.5 py-1 rounded bg-cyber-cyan/10 border border-cyber-cyan/30 text-cyber-cyan">
+                        {project.category}
+                      </span>
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                      {project.title}
+                    </h3>
+                    <p className="text-base text-zinc-400 font-normal max-w-[65ch]">
+                      {project.subtitle}
+                    </p>
+                  </div>
+
+                  {/* Technologies tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-3 py-1 text-xs sm:text-sm rounded-md bg-obsidian-900 border border-white/10 text-zinc-200 font-mono"
+                      >
+                        <code>{tech}</code>
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Overview */}
+                  <p className="text-base text-zinc-300 leading-relaxed max-w-[65ch]">
+                    {project.overview}
                   </p>
-                </div>
 
-                {/* Architecture Flow Strip */}
-                {project.architectureNote && (
-                  <div className="p-3 rounded-lg bg-argon-bg border border-argon-border font-mono text-xs text-argon-dark flex items-center gap-2 overflow-x-auto">
-                    <GitBranch className="w-4 h-4 text-argon-primary shrink-0" />
-                    <span className="whitespace-nowrap">{project.architectureNote}</span>
-                  </div>
-                )}
+                  {/* Architecture Steps Flow Diagram */}
+                  {project.architectureSteps && (
+                    <div className="p-5 rounded-xl bg-obsidian-900/90 border border-white/5 space-y-4">
+                      <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-cyber-cyan">
+                        <Layers className="w-4 h-4 text-cyber-cyan" />
+                        <span>Pipeline Architecture &amp; Data Flow</span>
+                      </div>
 
-                {/* Case Study Details */}
-                <dl className="space-y-3 text-xs sm:text-sm">
-                  <div>
-                    <dt className="font-mono text-[11px] uppercase tracking-wider text-argon-muted">
-                      Problem Statement
-                    </dt>
-                    <dd className="text-argon-muted mt-0.5 leading-relaxed">
-                      {project.problem}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="font-mono text-[11px] uppercase tracking-wider text-argon-muted">
-                      Solution &amp; Architecture
-                    </dt>
-                    <dd className="text-argon-dark mt-0.5 leading-relaxed">
-                      {project.solution}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="font-mono text-[11px] uppercase tracking-wider text-argon-muted">
-                      My Contribution
-                    </dt>
-                    <dd className="text-argon-muted mt-0.5 leading-relaxed">
-                      {project.contribution}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="font-mono text-[11px] uppercase tracking-wider text-argon-muted">
-                      Verified Results
-                    </dt>
-                    <dd className="text-argon-dark font-medium mt-0.5 leading-relaxed">
-                      {project.verifiedResults}
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-
-              {/* Footer: Tech Tags & Links */}
-              <div className="pt-6 mt-6 border-t border-argon-border space-y-4">
-                <div className="flex flex-wrap gap-1.5">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2.5 py-1 text-xs font-mono bg-argon-subtle text-argon-dark rounded-md"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-4 text-xs font-mono">
-                  {project.githubUrl ? (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-argon-dark hover:text-argon-primary"
-                    >
-                      <Github className="w-4 h-4" />
-                      Source Repository
-                    </a>
-                  ) : (
-                    <span className="text-argon-muted italic">
-                      [Supply GitHub URL in portfolioData.js]
-                    </span>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 relative">
+                        {project.architectureSteps.map((step, sIdx) => (
+                          <div
+                            key={sIdx}
+                            className="p-4 rounded-xl bg-obsidian-850 border border-white/10 space-y-1.5 hover:border-cyber-cyan/30 transition-colors"
+                          >
+                            <div className="text-xs font-mono font-semibold text-cyber-emerald flex items-center justify-between">
+                              <code>{step.label}</code>
+                              <span className="text-[10px] text-zinc-500 font-mono">Stage {sIdx + 1}</span>
+                            </div>
+                            <div className="text-xs sm:text-sm text-zinc-400 leading-normal">
+                              {step.desc}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   )}
 
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-argon-dark hover:text-argon-primary"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Live Demo
-                    </a>
-                  )}
-                </div>
-              </div>
-            </article>
-          ))}
+                  {/* Key Takeaways */}
+                  <div className="space-y-2.5">
+                    <h4 className="text-xs font-mono uppercase tracking-wider text-zinc-400">
+                      Key Engineering Highlights
+                    </h4>
+                    <ul className="space-y-2 text-base text-zinc-300 max-w-[65ch]">
+                      {project.keyTakeaways.map((point, pIdx) => (
+                        <li key={pIdx} className="flex items-start gap-3">
+                          <CheckCircle2 className="w-4 h-4 text-cyber-emerald shrink-0 mt-1" />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.article>
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>
